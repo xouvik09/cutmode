@@ -1,102 +1,220 @@
-## Cut-Mode Gamified
+# CUTMODE –  Fitness & Discipline Tracker
 
-A gamified cut/fitness tracker with daily logging, streaks, points, and analytics.
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge\&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge\&logo=typescript)
+![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge\&logo=node.js)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge\&logo=postgresql)
 
-### Features
-- **Account system**: register/login/logout (session-based)
-- **Daily logs**: weight, calories, protein, steps, workout
-- **Gamification**: points, streak, cheat tokens
-- **Strict mode**: penalizes points when exceeding calories
-- **Analytics**: progress charts with selectable time range (2w/30d/8w/90d)
+CUTMODE is a gamified fitness and weight-cut tracking system designed to make discipline and habit consistency engaging through game mechanics. Instead of a simple calorie tracker, CUTMODE introduces streaks, points, cheat-token rewards, and progress analytics to encourage long-term adherence to fitness goals. Users can log daily data such as body weight, calories, protein intake, steps, and workouts while tracking progress through visual charts and performance metrics.
 
-### Tech stack
-- **Client**: React + Vite + Tailwind
-- **Server**: Express (TypeScript)
-- **Database**: Postgres + Drizzle ORM (optional in dev, required for real persistence)
-- **Auth**: Sessions (`express-session`) + cookie-based login
+The application is built using a modern full-stack JavaScript architecture and focuses on behavior-driven feedback systems that motivate users to stay consistent with their fitness routines.
 
-### Requirements
-- Node.js **20+** (recommended: latest LTS)
-- Optional for persistence: Docker Desktop (or any Postgres 16+)
+---
 
-### Environment variables
-Create a `.env` file (see `.env.example`):
-- **`PORT`**: server port (default `5000`)
-- **`SESSION_SECRET`**: session signing secret (change in production)
-- **`DATABASE_URL`**: Postgres connection string (required for persistence)
+## Features
 
-### Local development (no database)
-This mode runs with an **in-memory** store (data resets on restart).
+* Daily logging of **weight, calories, protein, steps, and workouts**
+* **Gamification system** with points, streaks, and cheat-token rewards
+* **Strict mode** that penalizes points when calorie targets are exceeded
+* **Progress analytics** with selectable time ranges (2w / 30d / 8w / 90d)
+* **Session-based authentication** with login and registration
+* **Behavior-driven feedback system** to reinforce discipline
+* **Persistent data storage** with PostgreSQL
 
-```bash
+---
+
+## Tech Stack
+
+### Frontend
+
+* React
+* Vite
+* Tailwind CSS
+
+### Backend
+
+* Express (TypeScript)
+
+### Database
+
+* PostgreSQL
+* Drizzle ORM
+
+### Authentication
+
+* Session-based authentication using `express-session` and cookies
+
+---
+
+## Requirements
+
+* Node.js **v20+** (recommended: latest LTS)
+* Optional: **Docker Desktop** or any PostgreSQL 16+ database for persistence
+
+---
+
+## Environment Variables
+
+Create a `.env` file based on `.env.example`.
+
+Example configuration:
+
+```env id="env01"
+PORT=5000
+SESSION_SECRET=your_secret_here
+DATABASE_URL=your_postgres_connection_string
+```
+
+---
+
+## Local Development (No Database)
+
+This mode runs with an in-memory store. Data will reset when the server restarts.
+
+```bash id="dev01"
 npm ci
 npm run dev
 ```
 
-Open `http://localhost:5000`.
+Open in browser:
 
-### Local development with Postgres (persistent)
-1. Start Postgres:
+```
+http://localhost:5000
+```
 
-```bash
+---
+
+## Local Development With PostgreSQL (Persistent)
+
+Start PostgreSQL:
+
+```bash id="dev02"
 docker compose up -d
 ```
 
-2. Create `.env` from `.env.example` and set `DATABASE_URL` + `SESSION_SECRET`.
+Push database schema:
 
-3. Push schema:
-
-```bash
+```bash id="dev03"
 npm run db:push
 ```
 
-4. Start:
+Start development server:
 
-```bash
+```bash id="dev04"
 npm run dev
 ```
 
-### Scripts
-- **`npm run dev`**: start dev server (Express + Vite middleware)
-- **`npm run build`**: build client + server into `dist/`
-- **`npm start`**: run production server from `dist/`
-- **`npm run check`**: TypeScript typecheck
-- **`npm run db:push`**: apply Drizzle schema to database
+---
 
-### Project structure
-- **`client/`**: React app
-- **`server/`**: Express API + Vite integration
-- **`shared/`**: shared Zod schemas + API route definitions
-- **`script/`**: build script
+## Available Scripts
+
+```bash id="scripts01"
+npm run dev       # Start development server
+npm run build     # Build client and server into /dist
+npm start         # Run production server
+npm run check     # TypeScript type checking
+npm run db:push   # Apply Drizzle schema to database
+```
+
+---
+
+## Project Structure
+
+```
+cutmode/
+│
+├── client/      # React frontend
+├── server/      # Express API and backend logic
+├── shared/      # Shared schemas and API route definitions
+├── script/      # Build scripts
+└── dist/        # Production build output
+```
+
+---
 
 ## Deployment
 
-### Option A: Docker (recommended)
-1. Create `.env` and set **`DATABASE_URL`** and **`SESSION_SECRET`** (see `.env.example`).
-2. Build an image:
+### Docker (Recommended)
 
-```bash
+Build Docker image:
+
+```bash id="dock01"
 docker build -t cutmode .
 ```
 
-3. Run the container:
+Run container:
 
-```bash
+```bash id="dock02"
 docker run --rm -p 5000:5000 --env-file .env cutmode
 ```
 
-4. Provide Postgres:
-- Recommended: managed Postgres (Render/Railway/Fly/Neon/Supabase) and point `DATABASE_URL` at it
-- Or run locally with `docker compose up -d` using `docker-compose.yml`
+Provide PostgreSQL via a managed service such as:
 
-### Option B: Render / Railway / Fly.io
-High-level steps:
-- Provision a **managed Postgres** database
-- Set env vars: `DATABASE_URL`, `SESSION_SECRET`, `NODE_ENV=production`, `PORT`
-- Build command: `npm ci && npm run build`
-- Start command: `npm start`
+* Render
+* Railway
+* Fly.io
+* Neon
+* Supabase
 
-Notes:
-- The app serves both API and frontend from the same server/port in production.
-- Sessions are stored in Postgres when `DATABASE_URL` is set.
+---
 
+### Cloud Deployment (Render / Railway / Fly.io)
+
+Steps:
+
+1. Provision a managed PostgreSQL database
+2. Configure environment variables:
+
+   * DATABASE_URL
+   * SESSION_SECRET
+   * NODE_ENV=production
+   * PORT
+
+Build command:
+
+```bash id="deploy01"
+npm ci && npm run build
+```
+
+Start command:
+
+```bash id="deploy02"
+npm start
+```
+
+The application serves both **API and frontend from the same server** in production, and sessions are stored in PostgreSQL when `DATABASE_URL` is configured.
+
+---
+
+## Live Demo
+
+Try the application here:
+
+https://cut-mode-gamified--ocean09.replit.app
+
+---
+
+## Author
+
+**Souvik Ghosh**
+
+Aspiring Software Engineer focused on building practical full-stack systems and behavior-driven applications. This project was created as a personal discipline tool to gamify fitness tracking while also serving as a portfolio project demonstrating full-stack development, gamification mechanics, and modern web technologies.
+
+GitHub:
+https://github.com/xouvik09
+
+---
+
+## Future Improvements
+
+* AI-driven nutrition coach
+* Smart meal planning
+* Mobile-friendly UI improvements
+* Social leaderboard and challenges
+* Advanced analytics and goal prediction
+
+---
+
+## License
+
+This project is open source and available under the **MIT License**.
