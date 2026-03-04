@@ -19,8 +19,8 @@ app.use((_req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   // eslint-disable-next-line no-console
-  console.log(`CUTMODE server listening on http://localhost:${PORT}`);
+  console.log(`CUTMODE server running on port ${PORT}`);
 });
 
