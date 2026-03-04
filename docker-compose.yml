@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: cutmode-postgres
+    environment:
+      POSTGRES_USER: cutmode
+      POSTGRES_PASSWORD: cutmode
+      POSTGRES_DB: cutmode
+    ports:
+      - "5432:5432"
+    volumes:
+      - cutmode_pgdata:/var/lib/postgresql/data
+
+volumes:
+  cutmode_pgdata:
+
